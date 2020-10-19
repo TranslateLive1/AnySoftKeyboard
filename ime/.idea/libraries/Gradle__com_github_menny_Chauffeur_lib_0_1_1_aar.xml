@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="Gradle: com.github.menny.Chauffeur:lib:0.1.1@aar">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/9844f018eae65e84621a94ea3fda1343/lib-0.1.1/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/9844f018eae65e84621a94ea3fda1343/lib-0.1.1/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/9844f018eae65e84621a94ea3fda1343/lib-0.1.1/res" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.menny.Chauffeur/lib/0.1.1/47330687958cb39bb1dff9e1ea4f922bb6d688e9/lib-0.1.1-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.menny.Chauffeur/lib/0.1.1/e705cac760f6ddce2162072ffa382188fc6ac23f/lib-0.1.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

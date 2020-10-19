@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="Gradle: com.github.karczews:rx2-broadcast-receiver:1.0.5@aar">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/bc752727585b31f4fe73a2959d79098d/rx2-broadcast-receiver-1.0.5/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/bc752727585b31f4fe73a2959d79098d/rx2-broadcast-receiver-1.0.5/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/bc752727585b31f4fe73a2959d79098d/rx2-broadcast-receiver-1.0.5/res" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.karczews/rx2-broadcast-receiver/1.0.5/37b19d9f87ef9e8dcdd097212ba05dc3338c19e/rx2-broadcast-receiver-1.0.5-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.karczews/rx2-broadcast-receiver/1.0.5/c3098e31a2a476854c404678475fca5753bbb91d/rx2-broadcast-receiver-1.0.5-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

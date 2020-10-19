@@ -17,9 +17,11 @@
 package com.menny.android.anysoftkeyboard;
 
 import android.app.Application;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -75,6 +77,7 @@ public class AnyApplication extends Application {
             "settings_key_last_app_version_installed";
     static final String PREF_KEYS_LAST_INSTALLED_APP_TIME =
             "settings_key_first_time_current_version_installed";
+    static final String mAction = "com.translatelive.ila.keyboard";
 
     private static DeviceSpecific msDeviceSpecific;
     private final CompositeDisposable mCompositeDisposable = new CompositeDisposable();
@@ -87,6 +90,7 @@ public class AnyApplication extends Application {
     private QuickTextKeyFactory mQuickTextKeyFactory;
     private RxSharedPrefs mRxSharedPrefs;
     private Subject<Boolean> mNightModeSubject = ReplaySubject.createWithSize(1);
+    private BroadcastReceiver myLanguageChangeReceiver;
 
     public static DeviceSpecific getDeviceSpecific() {
         return msDeviceSpecific;
@@ -144,6 +148,7 @@ public class AnyApplication extends Application {
         Logger.i(TAG, "** BUILD_TYPE: " + BuildConfig.BUILD_TYPE);
         Logger.i(TAG, "** DEBUG: " + BuildConfig.DEBUG);
         Logger.i(TAG, "** TESTING_BUILD: " + BuildConfig.TESTING_BUILD);
+
         msDeviceSpecific = createDeviceSpecificImplementation(Build.VERSION.SDK_INT);
         Logger.i(
                 TAG,
@@ -200,6 +205,8 @@ public class AnyApplication extends Application {
         mNightModeSubject.onNext(
                 (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK)
                         == Configuration.UI_MODE_NIGHT_YES);
+
+
     }
 
     @Override
@@ -383,4 +390,5 @@ public class AnyApplication extends Application {
                     t.toString());
         }
     }
+
 }
