@@ -739,7 +739,8 @@ public class KeyboardSwitcher {
         }
     }
 
-    private AnyKeyboard getCurrentKeyboard() {
+    @NonNull
+    public AnyKeyboard getCurrentKeyboard() {
         if (isAlphabetMode()) {
             return getAlphabetKeyboard(mLastSelectedKeyboardIndex, mLastEditorInfo);
         } else {

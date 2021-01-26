@@ -16,10 +16,13 @@
 
 package com.anysoftkeyboard;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -43,6 +46,7 @@ import com.anysoftkeyboard.dictionaries.DictionaryAddOnAndBuilder;
 import com.anysoftkeyboard.dictionaries.ExternalDictionaryFactory;
 import com.anysoftkeyboard.dictionaries.WordComposer;
 import com.anysoftkeyboard.ime.AnySoftKeyboardColorizeNavBar;
+import com.anysoftkeyboard.ime.AnySoftKeyboardKeyboardSwitchedListener;
 import com.anysoftkeyboard.ime.InputViewBinder;
 import com.anysoftkeyboard.keyboards.AnyKeyboard;
 import com.anysoftkeyboard.keyboards.CondenseType;
@@ -65,12 +69,16 @@ import com.menny.android.anysoftkeyboard.R;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
+
 import net.evendanan.pixel.GeneralDialogController;
 
 /** Input method implementation for QWERTY-ish keyboard. */
 public abstract class AnySoftKeyboard extends AnySoftKeyboardColorizeNavBar {
 
     private static final ExtractedTextRequest EXTRACTED_TEXT_REQUEST = new ExtractedTextRequest();
+    
+    private static final String ILA_ACTION = "com.translatelive.ila.keyboard";
 
     private final PackagesChangedReceiver mPackagesChangedReceiver =
             new PackagesChangedReceiver(this);
@@ -89,6 +97,8 @@ public abstract class AnySoftKeyboard extends AnySoftKeyboardColorizeNavBar {
     private boolean mKeyboardAutoCap;
 
     private int mOrientation = Configuration.ORIENTATION_PORTRAIT;
+
+    private BroadcastReceiver ilaLanguageChangeReceiver;
 
     protected AnySoftKeyboard() {
         super();
@@ -220,6 +230,15 @@ public abstract class AnySoftKeyboard extends AnySoftKeyboardColorizeNavBar {
                                         "settings_key_keyboard_icon_in_status_bar")));
 
         mVoiceRecognitionTrigger = new VoiceRecognitionTrigger(this);
+
+        ilaLanguageChangeReceiver = new IlaLanguageChangeReceiver();
+
+        IntentFilter mIlaFilter = new IntentFilter(ILA_ACTION);
+        mIlaFilter.addAction(ILA_ACTION);
+        this.registerReceiver(ilaLanguageChangeReceiver, mIlaFilter);
+
+        Logger.i(TAG, "** CREATED_RECEIVER: " + ILA_ACTION);
+
     }
 
     private static CondenseType parseCondenseType(String prefCondenseType) {
@@ -254,6 +273,8 @@ public abstract class AnySoftKeyboard extends AnySoftKeyboardColorizeNavBar {
                             Toast.LENGTH_SHORT)
                     .show();
         }
+
+        this.unregisterReceiver(ilaLanguageChangeReceiver);
 
         super.onDestroy();
     }
@@ -1436,4 +1457,47 @@ public abstract class AnySoftKeyboard extends AnySoftKeyboardColorizeNavBar {
         mShiftKeyState.setActiveState(inputSaysCaps);
         handleShift();
     }
+
+    public class IlaLanguageChangeReceiver extends BroadcastReceiver {
+        private static final String TAG = "IlaBroadcastReceiver";
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+
+            if (ILA_ACTION.equals(action)) {
+                Bundle extras = intent.getExtras();
+
+                if (extras != null) {
+                    String languageCode = extras.getString("languageCode");
+
+                    Logger.i(TAG, "Received Language Code: " + languageCode);
+
+                    AnyKeyboard currentKb = getKeyboardSwitcher().getCurrentKeyboard();
+                    String currentKbLanguageCode = currentKb.getLocale().getLanguage();
+
+                    if (currentKb != null) {
+                        if(!currentKbLanguageCode.equals(languageCode)) {
+                            AnyKeyboard kb = getKeyboardSwitcher().nextKeyboard(getCurrentInputEditorInfo(), NextKeyboardType.Alphabet);
+
+                            Locale locale = kb.getLocale();
+                            String kbLanguage = locale.getLanguage();
+
+                            Logger.i(TAG, "Next Keyboard has locale: " + locale.getLanguage());
+
+                            while (!kbLanguage.equals(languageCode) && !kbLanguage.equals(currentKbLanguageCode)) {
+                                kb = getKeyboardSwitcher().nextKeyboard(getCurrentInputEditorInfo(), NextKeyboardType.Alphabet);
+
+                                locale = kb.getLocale();
+                                kbLanguage = locale.getLanguage();
+
+                                Logger.i(TAG, "Next Keyboard has locale: " + locale.getLanguage());
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 }

@@ -17,21 +17,25 @@
 package com.menny.android.anysoftkeyboard;
 
 import android.app.Application;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 import android.support.v4.content.SharedPreferencesCompat;
 import android.support.v7.app.AppCompatDelegate;
+
 import com.anysoftkeyboard.AnySoftKeyboard;
 import com.anysoftkeyboard.addons.AddOnsFactory;
 import com.anysoftkeyboard.android.NightMode;
@@ -45,9 +49,11 @@ import com.anysoftkeyboard.devicespecific.DeviceSpecificV16;
 import com.anysoftkeyboard.devicespecific.DeviceSpecificV19;
 import com.anysoftkeyboard.devicespecific.DeviceSpecificV24;
 import com.anysoftkeyboard.dictionaries.ExternalDictionaryFactory;
+import com.anysoftkeyboard.ime.AnySoftKeyboardKeyboardSwitchedListener;
 import com.anysoftkeyboard.keyboardextensions.KeyboardExtension;
 import com.anysoftkeyboard.keyboardextensions.KeyboardExtensionFactory;
 import com.anysoftkeyboard.keyboards.KeyboardFactory;
+import com.anysoftkeyboard.keyboards.KeyboardSwitcher;
 import com.anysoftkeyboard.prefs.RxSharedPrefs;
 import com.anysoftkeyboard.quicktextkeys.QuickTextKeyFactory;
 import com.anysoftkeyboard.saywhat.PublicNotice;
@@ -144,6 +150,7 @@ public class AnyApplication extends Application {
         Logger.i(TAG, "** BUILD_TYPE: " + BuildConfig.BUILD_TYPE);
         Logger.i(TAG, "** DEBUG: " + BuildConfig.DEBUG);
         Logger.i(TAG, "** TESTING_BUILD: " + BuildConfig.TESTING_BUILD);
+
         msDeviceSpecific = createDeviceSpecificImplementation(Build.VERSION.SDK_INT);
         Logger.i(
                 TAG,
@@ -383,4 +390,5 @@ public class AnyApplication extends Application {
                     t.toString());
         }
     }
+
 }
